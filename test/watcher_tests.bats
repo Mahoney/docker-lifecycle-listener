@@ -1,14 +1,13 @@
 #!/usr/bin/env ./libs/bats/bin/bats
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
-
 source 'libs/test_helpers.sh'
 
 exit_test() {
   local signal=$1
 
   # Given the notifier has started
-  ../notifier.sh &
+  ../docker_watcher.sh &
   process_under_test=$!
   sleep 1
 
@@ -30,15 +29,15 @@ exit_test() {
   assert_all_exited "$descendants"
 }
 
-@test "notifier exits cleanly on HUP" {
+@test "docker_watcher exits cleanly on HUP" {
   exit_test HUP
 }
 
-@test "notifier exits cleanly on TERM" {
+@test "docker_watcher exits cleanly on TERM" {
   exit_test TERM
 }
 
-@test "notifier exits cleanly on INT" {
+@test "docker_watcher exits cleanly on INT" {
   skip # I don't understand why this fails...
   exit_test INT
 }
