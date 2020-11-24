@@ -3,6 +3,17 @@
 This is a little system to allow running arbitrary commands on start and stop of
 the docker daemon.
 
+## Table of contents
+
+- [Purpose](#purpose)
+- [How it works](#how-it-works)
+- [Installation](#installation)
+  - [macOS](#macos)
+  - [Linux](#linux)
+  - [Windows](#windows)
+- [Configuration](#configuration)
+- [Development](#development)
+
 ## Purpose
 
 I wanted to run some scripts on the host whenever docker starts up - notably 
@@ -67,7 +78,7 @@ docker run \
 
 ### Windows
 
-No support at the moment.
+Unsupported.
 
 ## Configuration
 
@@ -79,3 +90,10 @@ The listener has one required and one optional argument:
 1) `script_dir` - a directory containing an `on_start` and an `on_stop` 
    directory, each of which can contain 0..n executables
 2) `port` to listen on - default `47200`
+
+## Development
+
+The notifier is intended to run on `busybox` so uses `sh` not `bash`.
+
+Tests can be written in [Bats](https://github.com/sstephenson/bats) and run via
+`./run_tests.sh`.
