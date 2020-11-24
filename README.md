@@ -13,6 +13,7 @@ the docker daemon.
   - [Windows](#windows)
 - [Configuration](#configuration)
 - [Development](#development)
+- [Troubleshooting](#troubleshooting)
 
 ## Purpose
 
@@ -54,6 +55,9 @@ cd docker-lifecycle-listener && \
 The listener will run on O/S startup as a launch daemon; logs can be found at
 `/var/log/docker-lifecycle-listener.log`.
 
+Scripts should be placed in `/usr/local/etc/docker-lifecycle-listener.d/on_start/`
+and `/usr/local/etc/docker-lifecycle-listener.d/on_stop/`.
+
 ### Linux
 This is manual at the moment...
 
@@ -91,9 +95,22 @@ The listener has one required and one optional argument:
    directory, each of which can contain 0..n executables
 2) `port` to listen on - default `47200`
 
+On macOS `script_dir` is `/usr/local/etc/docker-lifecycle-listener.d/`.
+
 ## Development
 
 The notifier is intended to run on `busybox` so uses `sh` not `bash`.
 
 Tests can be written in [Bats](https://github.com/sstephenson/bats) and run via
 `./run_tests.sh`.
+
+## Troubleshooting
+
+You can get some feedback on the behaviour of the notifier using
+```bash
+docker logs docker-lifecycle-notifier
+```
+
+The listener logs to stdout; on macOS this is redirected to
+`/var/log/docker-lifecycle-listener.log`. Behaviour on Linux will depend on how
+you set it up.

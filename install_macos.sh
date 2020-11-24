@@ -4,7 +4,8 @@ set -euo pipefail
 
 mkdir -p /usr/local/opt/docker-lifecycle-listener/sbin/
 cp listener.sh /usr/local/opt/docker-lifecycle-listener/sbin/
-mkdir -p /usr/local/etc/docker-lifecycle-listener.d
+mkdir -p /usr/local/etc/docker-lifecycle-listener.d/on_start
+mkdir /usr/local/etc/docker-lifecycle-listener.d/on_stop
 
 LISTENER_SERVICE_NAME=uk.org.lidalia.docker-lifecycle-listener
 
