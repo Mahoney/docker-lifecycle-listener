@@ -4,10 +4,16 @@ set -euo pipefail
 
 mkdir -p /usr/local/opt/docker-lifecycle-listener/sbin/
 cp listener.sh /usr/local/opt/docker-lifecycle-listener/sbin/
+mkdir -p /usr/local/etc/docker-lifecycle-listener.d
 
 LISTENER_SERVICE_NAME=uk.org.lidalia.docker-lifecycle-listener
-cp $LISTENER_SERVICE_NAME.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/$LISTENER_SERVICE_NAME.plist
+
+if launchctl list | grep $LISTENER_SERVICE_NAME; then
+  launchctl stop $LISTENER_SERVICE_NAME
+  launchctl unload /Library/LaunchDaemons/$LISTENER_SERVICE_NAME.plist
+fi
+cp $LISTENER_SERVICE_NAME.plist /Library/LaunchDaemons/
+launchctl load /Library/LaunchDaemons/$LISTENER_SERVICE_NAME.plist
 launchctl start $LISTENER_SERVICE_NAME
 
 NOTIFIER_NAME=docker-lifecycle-notifier

@@ -36,9 +36,10 @@ function kill_descendants {
 }
 
 main() {
-  local port=${1:-47200}
+  local script_dir=${1:?'You must pass a script directory'}
+  local port=${2:-47200}
   if docker_running; then
-    run_on_start
+    run_on_start "$script_dir"
   fi
 
   trap 'cleanup; exit 0' HUP INT TERM
@@ -48,8 +49,8 @@ main() {
     while read -r cmd; do
       if [ "$cmd" ]; then
         case $cmd in
-          'start') run_on_start ;;
-          'stop')  run_on_stop ;;
+          'start') run_on_start "$script_dir" ;;
+          'stop')  run_on_stop "$script_dir" ;;
           *)       unknown "$cmd" ;;
         esac
       fi

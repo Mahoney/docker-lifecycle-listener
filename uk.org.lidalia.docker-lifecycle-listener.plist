@@ -8,10 +8,15 @@
     <key>ProgramArguments</key>
     <array>
       <string>/usr/local/opt/docker-lifecycle-listener/sbin/listener.sh</string>
+      <string>/usr/local/etc/docker-lifecycle-listener.d</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
     <true/>
+    <key>StandardOutPath</key>
+    <string>/var/log/docker-lifecycle-listener.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/docker-lifecycle-listener.log</string>
   </dict>
 </plist>
