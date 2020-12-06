@@ -29,19 +29,21 @@ stops.
 
 ## How it works
 
-`listener.sh` runs on the host machine and listens on port 47200 (by default).
+`docker-lifecycle-listener.sh` runs on the host machine and listens on port
+47200 (by default).
 
 A tiny docker container is set up to start on docker start, immediately send 
 `start` to port 47200 on the host, then go to sleep. On being shutdown (which 
 will happen when docker stops) it sends `stop` to port 47200 on the host. 
 
-When `listener.sh` receives `start` it runs each script in 
+When `docker-lifecycle-listener.sh` receives `start` it runs each script in 
 `<script_dir>/on_start` in alphabetical order. When it receives `stop` it runs 
 each script in `<script_dir>/on_stop` in alphabetical order.
 
-In addition, if docker is already running, `listener.sh` will run each 
-script in `<script_dir>/on_start` in alphabetical order when `listener.sh`
-starts up in order to ensure it does not miss the start of the notifier.
+In addition, if docker is already running, `docker-lifecycle-listener.sh` will
+run each script in `<script_dir>/on_start` in alphabetical order when 
+`docker-lifecycle-listener.sh` starts up in order to ensure it does not miss 
+the start of the notifier.
 
 ## Installation
 
@@ -55,18 +57,19 @@ cd docker-lifecycle-listener && \
 The listener will run on O/S startup as a launch daemon; logs can be found at
 `/var/log/docker-lifecycle-listener.log`.
 
-Scripts should be placed in `/usr/local/etc/docker-lifecycle-listener.d/on_start/`
-and `/usr/local/etc/docker-lifecycle-listener.d/on_stop/`.
+Scripts should be placed in
+`/usr/local/etc/docker-lifecycle-listener.d/on_start/` and 
+`/usr/local/etc/docker-lifecycle-listener.d/on_stop/`.
 
 ### Linux
 This is manual at the moment...
 
-Place `listener.sh` in an appropriate place on your system
-(perhaps `/opt/docker-lifecycle-listener/listener.sh`?).
+Place `docker-lifecycle-listener.sh` in an appropriate place on your system
+(perhaps `/opt/docker-lifecycle-listener/docker-lifecycle-listener.sh`?).
 
-Set up your service runner to run `listener.sh` on system start. Its first
-argument is the script directory where you will place the start and stop 
-scripts (perhaps `/etc/docker-lifecycle-listener.d/`?).
+Set up your service runner to run `docker-lifecycle-listener.sh` on system
+start. Its first argument is the script directory where you will place the start
+and stop scripts (perhaps `/etc/docker-lifecycle-listener.d/`?).
 
 Build and start the docker image & container:
 ```bash

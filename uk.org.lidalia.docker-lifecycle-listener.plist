@@ -7,7 +7,7 @@
     <string>uk.org.lidalia.docker-lifecycle-listener</string>
     <key>ProgramArguments</key>
     <array>
-      <string>/usr/local/opt/docker-lifecycle-listener/sbin/listener.sh</string>
+      <string>/usr/local/opt/docker-lifecycle-listener/sbin/docker-lifecycle-listener.sh</string>
       <string>/usr/local/etc/docker-lifecycle-listener.d</string>
     </array>
     <key>RunAtLoad</key>
