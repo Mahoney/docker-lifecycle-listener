@@ -108,7 +108,7 @@ kill_descendants() {
 check_directory_permissions() {
   for command in "${valid_commands[@]}"; do
     declare dir; dir="$script_dir/on_$command"
-    if ! permissions_are_ok_for "$dir"; then
+    if [ -e "$dir" ] && ! permissions_are_ok_for "$dir"; then
       error "$dir must be owned by the root user & only writable by the root user for this script to be run as root"
       return 1
     fi
