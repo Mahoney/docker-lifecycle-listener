@@ -24,16 +24,24 @@ running_as_root() {
   [ "$(id -u)" -eq 0 ]
 }
 
+owner_of() {
+  local file=$1
+  stat -L -f '%u' "$file"
+}
+
 root_is_owner_of() {
   local file=$1
-  local owner; owner=$(stat -f '%u' "$file")
-  [ "$owner" -eq 0 ]
+  [ "$(owner_of "$file")" -eq 0 ]
+}
+
+group_other_permissions() {
+  local file=$1
+  stat -L -f "%SMp%SLp" "$file"
 }
 
 only_owner_can_write_to() {
   local file=$1
-  local group_other_permissions; group_other_permissions=$(stat -f "%SMp%SLp" "$file")
-  ! [[ "$group_other_permissions" =~ w ]]
+  ! [[ "$(group_other_permissions "$file")" =~ w ]]
 }
 
 permissions_are_ok_for() {
@@ -106,12 +114,17 @@ kill_descendants() {
 }
 
 check_directory_permissions() {
+  local dir=$1
+  if [ -e "$dir" ] && ! permissions_are_ok_for "$dir"; then
+    error "$dir must be owned by the root user & only writable by the root user for this script to be run as root"
+    return 1
+  fi
+}
+
+check_all_directory_permissions() {
+  check_directory_permissions "$script_dir"
   for command in "${valid_commands[@]}"; do
-    declare dir; dir="$script_dir/on_$command"
-    if [ -e "$dir" ] && ! permissions_are_ok_for "$dir"; then
-      error "$dir must be owned by the root user & only writable by the root user for this script to be run as root"
-      return 1
-    fi
+    check_directory_permissions "$script_dir/on_$command"
   done
 }
 
@@ -133,7 +146,7 @@ main() {
   local script_dir=${1:?'You must pass a script directory'}
   local port=${2:-47200}
 
-  check_directory_permissions
+  check_all_directory_permissions
 
   if docker_running; then
     run_on start "$script_dir"
