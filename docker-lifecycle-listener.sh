@@ -25,16 +25,14 @@ running_as_root() {
 }
 
 root_is_owner_of() {
-  local script_dir=$1
-  local owner
-  owner=$(stat -f '%u' "$script_dir")
+  local file=$1
+  local owner; owner=$(stat -f '%u' "$file")
   [ "$owner" -eq 0 ]
 }
 
 only_owner_can_write_to() {
-  local script_dir=$1
-  local group_other_permissions
-  group_other_permissions=$(stat -f "%SMp%SLp" "$script_dir")
+  local file=$1
+  local group_other_permissions; group_other_permissions=$(stat -f "%SMp%SLp" "$file")
   ! [[ "$group_other_permissions" =~ w ]]
 }
 
