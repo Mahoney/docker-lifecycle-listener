@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -exuo pipefail
+set -euo pipefail
 
 INSTALL_DIR=/usr/local/opt/docker-lifecycle-listener
 BINARY_DIR="$INSTALL_DIR/sbin/"
