@@ -101,7 +101,9 @@ unknown() {
 }
 
 cleanup() {
+  set +e
   kill_descendants $$
+  set -e
 }
 
 kill_descendants() {
@@ -109,7 +111,7 @@ kill_descendants() {
   for i in $children; do
     declare child="$i"
     kill_descendants "$child"
-    kill "$child"
+    kill "$child" 2>/dev/null
   done
 }
 
@@ -150,9 +152,11 @@ main() {
 
   if docker_running; then
     run_on start "$script_dir"
+  else
+    log "Docker not running at the moment"
   fi
 
-  trap 'cleanup; exit 0' HUP INT TERM
+  trap 'cleanup; log Stopped; exit 0' HUP INT TERM
 
   log "Listening for commands on port $port"
   while :; do

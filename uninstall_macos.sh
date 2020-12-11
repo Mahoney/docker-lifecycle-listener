@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -exuo pipefail
+set -euo pipefail
 
 INSTALL_DIR=/usr/local/opt/docker-lifecycle-listener
 
@@ -9,7 +9,7 @@ sudo rm -rf "$INSTALL_DIR"
 LISTENER_SERVICE_NAME=uk.org.lidalia.docker-lifecycle-listener
 
 if launchctl list | grep $LISTENER_SERVICE_NAME; then
-  sudo launchctl unload /Library/LaunchDaemons/$LISTENER_SERVICE_NAME.plist
+  sudo launchctl unload $LISTENER_SERVICE_NAME
 fi
 sudo rm -f /Library/LaunchDaemons/$LISTENER_SERVICE_NAME.plist
 

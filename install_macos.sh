@@ -22,10 +22,10 @@ sudo chown -R root:wheel "$SCRIPT_DIR"
 LISTENER_SERVICE_NAME=uk.org.lidalia.docker-lifecycle-listener
 
 if launchctl list | grep $LISTENER_SERVICE_NAME; then
-  sudo launchctl unload /Library/LaunchDaemons/$LISTENER_SERVICE_NAME.plist
+  sudo launchctl unload $LISTENER_SERVICE_NAME
 fi
 sudo cp $LISTENER_SERVICE_NAME.plist /Library/LaunchDaemons/
-launchctl load /Library/LaunchDaemons/$LISTENER_SERVICE_NAME.plist
+launchctl load $LISTENER_SERVICE_NAME
 launchctl start $LISTENER_SERVICE_NAME
 
 NOTIFIER_NAME=docker-lifecycle-notifier
