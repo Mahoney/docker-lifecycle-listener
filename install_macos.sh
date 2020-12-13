@@ -16,17 +16,24 @@ SCRIPT_DIR=/usr/local/etc/docker-lifecycle-listener.d
 mkdir -p "$SCRIPT_DIR/on_start"
 mkdir -p "$SCRIPT_DIR/on_stop"
 
-chmod -R u=rwx,g=rx,o=rx "$SCRIPT_DIR"
+sudo chmod -R u=rwx,g=rx,o=rx "$SCRIPT_DIR"
 sudo chown -R root:wheel "$SCRIPT_DIR"
 
 LISTENER_SERVICE_NAME=uk.org.lidalia.docker-lifecycle-listener
+LISTENER_SERVICE_FILE_NAME="$LISTENER_SERVICE_NAME.plist"
+LISTENER_SERVICE_LOCATION="/Library/LaunchDaemons/$LISTENER_SERVICE_FILE_NAME"
 
 if launchctl list | grep $LISTENER_SERVICE_NAME; then
-  sudo launchctl unload $LISTENER_SERVICE_NAME
+  echo "Unloading $LISTENER_SERVICE_LOCATION"
+  sudo launchctl unload "$LISTENER_SERVICE_LOCATION"
+  echo "Unloaded $LISTENER_SERVICE_LOCATION"
 fi
-sudo cp $LISTENER_SERVICE_NAME.plist /Library/LaunchDaemons/
-launchctl load $LISTENER_SERVICE_NAME
-launchctl start $LISTENER_SERVICE_NAME
+sudo cp "$LISTENER_SERVICE_FILE_NAME" "$LISTENER_SERVICE_LOCATION"
+echo "Loading $LISTENER_SERVICE_LOCATION"
+sudo launchctl load "$LISTENER_SERVICE_LOCATION"
+echo "Loaded $LISTENER_SERVICE_LOCATION"
+sudo launchctl start $LISTENER_SERVICE_NAME
+echo "Started $LISTENER_SERVICE_NAME"
 
 NOTIFIER_NAME=docker-lifecycle-notifier
 
