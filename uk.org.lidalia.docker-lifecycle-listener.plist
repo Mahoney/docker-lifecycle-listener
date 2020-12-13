@@ -5,6 +5,11 @@
   <dict>
     <key>Label</key>
     <string>uk.org.lidalia.docker-lifecycle-listener</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
     <key>ProgramArguments</key>
     <array>
       <string>/usr/local/opt/docker-lifecycle-listener/sbin/docker-lifecycle-listener.sh</string>
