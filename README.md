@@ -7,6 +7,7 @@ the docker daemon.
 
 - [Purpose](#purpose)
 - [How it works](#how-it-works)
+  - [Security Considerations](#security-considerations)
 - [Installation](#installation)
   - [macOS](#macos)
   - [Linux](#linux)
