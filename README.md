@@ -55,6 +55,11 @@ if it is running as `root`, both the directories and the scripts must be owned
 and only writable by `root`. A malicious actor will therefore need to get
 elevated privileges in order to use this listener to run its code.
 
+The server could be called by any process, but will only respond to known
+commands (`start` and `stop`). So the most a malicious actor could do by sending
+commands to it is execute the same executables as are executed under normal
+circumstances.
+
 ## Installation
 
 ### macOS
