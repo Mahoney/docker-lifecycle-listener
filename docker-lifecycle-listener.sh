@@ -85,7 +85,7 @@ run_on() {
 
   log "Received $command"
 
-  local dir; dir=$(realpath "$script_dir/on_$command/")
+  local dir; dir="$script_dir/on_$command/"
   if [ -d "$dir" ]; then
     for file in "$dir"/*; do
       run_if_possible "$file"
