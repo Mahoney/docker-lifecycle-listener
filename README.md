@@ -45,6 +45,15 @@ run each script in `<script_dir>/on_start` in alphabetical order when
 `docker-lifecycle-listener.sh` starts up in order to ensure it does not miss 
 the start of the notifier.
 
+### Security Considerations
+
+Obviously any process that runs arbitrary executables in a directory is an
+attack vector for malicious exploitation. This is particularly so if it is
+running as `root`. To mitigate this `docker-lifecycle-listener.sh` insists that,
+if it is running as `root`, both the directories and the scripts must be owned
+and only writable by `root`. A malicious actor will therefore need to get
+elevated privileges in order to use this listener to run its code.
+
 ## Installation
 
 ### macOS
