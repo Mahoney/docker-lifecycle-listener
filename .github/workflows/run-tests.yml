@@ -26,4 +26,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run macOS tests
-        run: bats test/docker-lifecycle-listener.bats
+        run: |
+          pwd
+          bats --version
+          bats test/docker-lifecycle-listener.bats
