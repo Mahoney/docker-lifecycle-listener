@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches-ignore:
+      - 'abandoned-*'
+  schedule:
+    # Daily at 2AM
+    # * is a special character in YAML so you have to quote this string
+    - cron: '0 2 * * *'
+
+jobs:
+  linux-tests:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run Linux tests
+        run: ./run_tests.sh
+
+  mac-tests:
+    runs-on: macos-10.15
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run macOS tests
+        run: |
+          brew install bats-core
+          bats test/docker-lifecycle-listener.bats

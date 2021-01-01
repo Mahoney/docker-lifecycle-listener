@@ -22,7 +22,7 @@ exit_test() {
   local signal=$2
 
   # Given the notifier has started
-  bash -c "$command" &
+  bash -c "$(pwd)/$command" &
   process_under_test=$!
   sleep 1
 

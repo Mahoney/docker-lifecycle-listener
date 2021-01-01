@@ -12,14 +12,14 @@ teardown() {
 }
 
 @test "docker-lifecycle-listener exits cleanly on TERM" {
-  exit_test "/code/docker-lifecycle-listener.sh $tmp_script_dir" TERM
+  exit_test "docker-lifecycle-listener.sh $tmp_script_dir" TERM
 }
 
 @test "docker-lifecycle-listener exits cleanly on HUP" {
-  exit_test "/code/docker-lifecycle-listener.sh $tmp_script_dir" HUP
+  exit_test "docker-lifecycle-listener.sh $tmp_script_dir" HUP
 }
 
 @test "docker-lifecycle-listener exits cleanly on INT" {
   skip # I don't understand why this fails...
-  exit_test "/code/docker-lifecycle-listener.sh $tmp_script_dir" INT
+  exit_test "docker-lifecycle-listener.sh $tmp_script_dir" INT
 }
