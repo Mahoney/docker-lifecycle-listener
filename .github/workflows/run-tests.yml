@@ -26,6 +26,4 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run macOS tests
-        run: |
-          brew install bats-core
-          bats test/docker-lifecycle-listener.bats
+        run: bats test/docker-lifecycle-listener.bats
