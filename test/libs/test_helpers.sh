@@ -13,7 +13,7 @@ assert_all_exited() {
   while IFS= read -r process; do
     echo "Checking if $process has exited"
     run kill -0 "$process"
-    assert_failure
+    test "$status" -ne 0
   done <<< "$processes"
 }
 
@@ -27,8 +27,7 @@ exit_test() {
   sleep 1
 
   # Check it is running
-  run kill -0 $process_under_test
-  assert_success
+  kill -0 $process_under_test
 
   # Capture its child processes
   local descendants; descendants=$(get_descendants $process_under_test)
@@ -38,7 +37,7 @@ exit_test() {
 
   # Then it exits successfully
   wait $process_under_test
-  assert_equal $? 0
+  test $? -eq 0
 
   # And has no child processes
   assert_all_exited "$descendants"

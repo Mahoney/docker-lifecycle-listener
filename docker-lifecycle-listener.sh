@@ -1,8 +1,5 @@
 #! /usr/bin/env bash
 
-IFS=$'\n\t'
-set -euo pipefail
-
 declare valid_commands=("start" "stop")
 
 log() {
@@ -24,9 +21,17 @@ running_as_root() {
   [ "$(id -u)" -eq 0 ]
 }
 
+os_is_macOS() {
+  test "$(uname -a)" = 'Darwin'
+}
+
 owner_of() {
   local file=$1
-  stat -L -f '%u' "$file"
+  if os_is_macOS; then
+    stat -L -f '%u' "$file"
+  else
+    stat -L -c '%u' "$file"
+  fi
 }
 
 root_is_owner_of() {
@@ -36,7 +41,12 @@ root_is_owner_of() {
 
 group_other_permissions() {
   local file=$1
-  stat -L -f "%SMp%SLp" "$file"
+  if os_is_macOS; then
+    stat -L -f "%SMp%SLp" "$file"
+  else
+    local all_permissions; all_permissions=$(stat -L -c "%A" "$file")
+    echo "${all_permissions: -6}"
+  fi
 }
 
 only_owner_can_write_to() {
@@ -56,7 +66,7 @@ docker_running() {
   docker info 1>/dev/null 2>&1
 }
 
-run() {
+run_script() {
   local script=$1
   log "Running $(basename "$script")"
   if "$script"; then
@@ -70,7 +80,7 @@ run_if_possible() {
   local possible_script=$1
   if [ -x "$possible_script" ]; then
     if permissions_are_ok_for "$possible_script"; then
-      run "$possible_script"
+      run_script "$possible_script"
     else
       log "Skipping $(basename "$possible_script"); must be owned by root and not writable by anyone else"
     fi
@@ -145,6 +155,9 @@ run_command() {
 }
 
 main() {
+  IFS=$'\n\t'
+  set -euo pipefail
+
   local script_dir=${1:?'You must pass a script directory'}
   local port=${2:-47200}
 
@@ -168,4 +181,6 @@ main() {
   log 'Exiting'
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  main "$@"
+fi
