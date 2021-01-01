@@ -30,6 +30,6 @@ jobs:
           pwd
           bats --version
           brew uninstall bats
-          brew install bats
+          brew install bats-core
           bats --version
           bats test/docker-lifecycle-listener.bats
