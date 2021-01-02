@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-declare valid_commands=("start" "stop")
+valid_commands=("start" "stop")
 
 log() {
   echo "$(date +%Y-%d-%mT%H:%M:%S) $1"
@@ -10,9 +10,10 @@ error() {
   log >&2 "$1"
 }
 
-containsElement() {
-  local array="$1"
-  local item="$2"
+contains_element() {
+  local item="$1"
+  shift
+  local array=("$@")
   for array; do [[ "$array" == "$item" ]] && return 0; done
   return 1
 }
@@ -142,7 +143,7 @@ check_all_directory_permissions() {
 
 is_valid_command() {
   local command=$1
-  containsElement "${valid_commands[@]}" "$command"
+  contains_element "$command" "${valid_commands[@]}"
 }
 
 run_command() {

@@ -23,3 +23,13 @@ teardown() {
   skip # I don't understand why this fails...
   exit_test "docker-lifecycle-listener.sh $tmp_script_dir" INT
 }
+
+@test "is_valid_command succeeds for valid command" {
+  is_valid_command "start"
+  is_valid_command "stop"
+}
+
+@test "is_valid_command fails for invalid command" {
+  run is_valid_command "whatever"
+  test "$status" -ne 0
+}
