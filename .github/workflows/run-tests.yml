@@ -27,9 +27,6 @@ jobs:
 
       - name: Run macOS tests
         run: |
-          pwd
-          bats --version
           brew uninstall bats
           brew install bats-core
-          bats --version
           bats test/docker-lifecycle-listener.bats
