@@ -173,11 +173,10 @@ main() {
   trap 'cleanup; log Stopped; exit 0' HUP INT TERM
 
   log "Listening for commands on port $port"
-  while :; do
-    while read -r command; do
-      run_command "$command"
-    done < <(nc -l "$port")
-  done
+
+  while read -r command; do
+    run_command "$command"
+  done < <(nc -kl "$port")
 
   log 'Exiting'
 }
