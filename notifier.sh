@@ -1,7 +1,7 @@
 #!/bin/sh
 
 log() {
-  echo "$(date +%Y-%d-%mT%H:%M:%S) $1"
+  echo "$(date +%Y-%d-%mT%H:%M:%S%Z) $1"
 }
 
 send() {
