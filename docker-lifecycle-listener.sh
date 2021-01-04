@@ -23,7 +23,7 @@ running_as_root() {
 }
 
 os_is_macOS() {
-  test "$(uname -a)" = 'Darwin'
+  test "$(uname -s)" = 'Darwin'
 }
 
 owner_of() {

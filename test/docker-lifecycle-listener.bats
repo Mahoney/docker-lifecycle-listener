@@ -33,3 +33,37 @@ teardown() {
   run is_valid_command "whatever"
   test "$status" -ne 0
 }
+
+@test "group_other_permissions returns correct values" {
+  local a_file; a_file=$(mktemp)
+  chmod g=rw,o=rx "$a_file"
+
+  run group_other_permissions "$a_file"
+
+  test "$output" = 'rw-r-x'
+}
+
+@test "only_owner_can_write_to succeeds if only owner can write" {
+  local a_file; a_file=$(mktemp)
+  chmod u=rwx,g=rx,o=rx "$a_file"
+
+  only_owner_can_write_to "$a_file"
+}
+
+@test "only_owner_can_write_to fails if group can write" {
+  local a_file; a_file=$(mktemp)
+  chmod u=rwx,g=rwx,o=rx "$a_file"
+
+  run only_owner_can_write_to "$a_file"
+
+  test "$status" -ne 0
+}
+
+@test "only_owner_can_write_to fails if other can write" {
+  local a_file; a_file=$(mktemp)
+  chmod u=rwx,g=rx,o=rwx "$a_file"
+
+  run only_owner_can_write_to "$a_file"
+
+  test "$status" -ne 0
+}
