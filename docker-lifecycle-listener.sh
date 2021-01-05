@@ -69,11 +69,12 @@ docker_running() {
 
 run_script() {
   local script=$1
-  log "Running $(basename "$script")"
+  local script_name; script_name="$(basename "$script")"
+  log "Running $script_name"
   if "$script"; then
-    log "Ran $(basename "$script")"
+    log "$script_name Succeeded"
   else
-    log "$(basename "$script") Failed"
+    log "$script_name Failed"
   fi
 }
 
