@@ -95,7 +95,7 @@ run_on() {
   local command="$1"
   local script_dir="$2"
 
-  log "Received $command"
+  log "Handling $command"
 
   local dir; dir="$script_dir/on_$command/"
   if [ -d "$dir" ]; then
@@ -105,6 +105,8 @@ run_on() {
   else
     log "$dir does not exist"
   fi
+
+  log "Finished handling $command"
 }
 
 unknown() {
