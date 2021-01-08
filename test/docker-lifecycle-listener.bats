@@ -67,3 +67,16 @@ teardown() {
 
   test "$status" -ne 0
 }
+
+@test "is_empty_dir succeeds if dir is empty" {
+  local empty_dir; empty_dir=$(mktemp -d)
+  is_empty_dir "$empty_dir"
+}
+
+@test "is_empty_dir fails if dir is empty" {
+  local non_empty_dir; non_empty_dir=$(mktemp -d)
+  touch "$non_empty_dir/something"
+
+  run is_empty_dir "$non_empty_dir"
+  test "$status" -ne 0
+}

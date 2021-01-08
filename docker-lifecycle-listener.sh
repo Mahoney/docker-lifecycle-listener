@@ -91,6 +91,11 @@ run_if_possible() {
   fi
 }
 
+is_empty_dir() {
+  local dir="$1"
+  [ -z "$(ls -A "$dir")" ]
+}
+
 run_on() {
   local command="$1"
   local script_dir="$2"
@@ -99,9 +104,13 @@ run_on() {
 
   local dir; dir="$script_dir/on_$command/"
   if [ -d "$dir" ]; then
-    for file in "$dir"/*; do
-      run_if_possible "$file"
-    done
+    if ! is_empty_dir "$dir"; then
+      for file in "$dir"/*; do
+        run_if_possible "$file"
+      done
+    else
+      log "$dir is empty"
+    fi
   else
     log "$dir does not exist"
   fi
