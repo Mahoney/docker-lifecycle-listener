@@ -124,7 +124,9 @@ unknown() {
 }
 
 cleanup() {
+  local socket=$1
   set +e
+  rm -f "$socket"
   kill_descendants $$
   set -e
 }
@@ -167,12 +169,18 @@ run_command() {
   fi
 }
 
+listen_to() {
+  local socket=$1
+  rm -f "$socket"
+  nc -lkU "$socket"
+}
+
 main() {
   IFS=$'\n\t'
   set -euo pipefail
 
   local script_dir=${1:?'You must pass a script directory'}
-  local port=${2:-47200}
+  local socket=${2:-"$1/docker-lifecycle-listener.sock"}
 
   check_all_directory_permissions
 
@@ -182,15 +190,13 @@ main() {
     log "Docker not running at the moment"
   fi
 
-  trap 'cleanup; log Stopped; exit 0' HUP INT TERM
+  trap 'cleanup "$socket"; log Stopped; exit 0' HUP INT TERM
 
-  log "Listening for commands on port $port"
+  log "Listening for commands on socket $socket"
 
   while read -r command; do
     run_command "$command"
-  done < <(nc -kl "$port")
-
-  log 'Exiting'
+  done < <(listen_to "$socket")
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

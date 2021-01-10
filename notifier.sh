@@ -6,13 +6,12 @@ log() {
 
 send() {
   message=$1
-  host=$2
-  port=$3
-  log "Sending $message to $host $port"
-  if echo "$message" | nc -w 1 "$host" "$port"; then
-    log "Sent $message to $host $port"
+  socket=$2
+  log "Sending $message to $socket"
+  if echo "$message" | nc "local:$socket"; then
+    log "Sent $message to $socket"
   else
-    log "Unable to send $message to $host $port"
+    log "Unable to send $message to $socket"
   fi
 }
 
@@ -22,12 +21,11 @@ cleanup() {
 }
 
 main() {
-  host=${1:-host.docker.internal}
-  port=${2:-47200}
+  socket=${1:-/var/run/docker-lifecycle-listener.sock}
 
-  send start "$host" "$port"
+  send start "$socket"
 
-  trap 'send stop $host $port; cleanup "$sleep_pid"; exit 0' HUP INT TERM
+  trap 'send stop $socket; cleanup "$sleep_pid"; exit 0' HUP INT TERM
 
   sleep infinity & sleep_pid=$!
   wait 2>/dev/null

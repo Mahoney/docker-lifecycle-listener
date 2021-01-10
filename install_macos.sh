@@ -44,5 +44,6 @@ docker build . -t $NOTIFIER_NAME
 docker run \
   --detach \
   --restart always \
-  --name $NOTIFIER_NAME \
-  $NOTIFIER_NAME
+  --name notifier-exp \
+  -v /tmp/experiment/docker-lifecycle-listener.sock:/var/run/docker-lifecycle-listener.sock \
+  notifier-exp
