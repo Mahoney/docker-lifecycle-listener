@@ -20,8 +20,8 @@
     <key>KeepAlive</key>
     <true/>
     <key>StandardOutPath</key>
-    <string>/var/log/docker-lifecycle-listener.log</string>
+    <string>/usr/local/var/log/docker-lifecycle-listener.log</string>
     <key>StandardErrorPath</key>
-    <string>/var/log/docker-lifecycle-listener.log</string>
+    <string>/usr/local/var/log/docker-lifecycle-listener.log</string>
   </dict>
 </plist>

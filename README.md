@@ -70,7 +70,7 @@ cd docker-lifecycle-listener && \
 ```
 
 The listener will run on O/S startup as a launch daemon; logs can be found at
-`/var/log/docker-lifecycle-listener.log`.
+`/usr/local/var/log/docker-lifecycle-listener.log`.
 
 Scripts should be placed in
 `/usr/local/etc/docker-lifecycle-listener.d/on_start/` and 
@@ -130,5 +130,5 @@ docker logs docker-lifecycle-notifier
 ```
 
 The listener logs to stdout; on macOS this is redirected to
-`/var/log/docker-lifecycle-listener.log`. Behaviour on Linux will depend on how
-you set it up.
+`/usr/local/var/log/docker-lifecycle-listener.log`. Behaviour on Linux will
+depend on how you set it up.
