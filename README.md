@@ -6,6 +6,7 @@ the docker daemon.
 ## Table of contents
 
 - [Purpose](#purpose)
+  - [Concrete Examples](#concrete-examples)
 - [How it works](#how-it-works)
   - [Security Considerations](#security-considerations)
 - [Installation](#installation)
@@ -27,6 +28,23 @@ restarted docker, and  have them run as soon as possible after docker starts.
 A possible use case is to start a script that listens to `docker events` - this 
 call can only be started when docker is started, and will exit when docker 
 stops.
+
+### Concrete Examples
+
+On macOS with Docker Desktop, out of the box you cannot currently
+[access containers by IP address](https://github.com/docker/for-mac/issues/155).
+A tuntap based solution to this was created called 
+[docker-tuntap-osx](https://github.com/AlmirKadric-Published/docker-tuntap-osx)
+but it requires manual steps whenever docker (or the OS) restarts and whenever
+a new network of type bridge is created. By running its scripts using 
+`docker-lifecycle-listener` it becomes an install-and-forget solution that will
+work forever. It was forked to do this at
+[Mahoney-forks/docker-tuntap-osx](https://github.com/Mahoney-forks/docker-tuntap-osx)
+
+You can install it via Homebrew:
+`brew install mahoney/tap/docker-tuntap-osx`
+
+Please read the caveats!
 
 ## How it works
 
@@ -57,12 +75,19 @@ elevated privileges in order to use this listener to run its code.
 
 The server could be called by any process, but will only respond to known
 commands (`start` and `stop`). So the most a malicious actor could do by sending
-commands to it is execute the same executables as are executed under normal
+commands to it is to execute the same executables as are executed under normal
 circumstances.
 
 ## Installation
 
 ### macOS
+
+Via Homebrew:
+`brew install mahoney/tap/docker-lifecycle-listener`
+
+Please read the caveats!
+
+Manually:
 ```bash
 git clone git@github.com:Mahoney/docker-lifecycle-listener.git && \
 cd docker-lifecycle-listener && \
@@ -110,7 +135,7 @@ The notifier can take between zero and two arguments:
 
 The listener has one required and one optional argument:
 1) `script_dir` - a directory containing an `on_start` and an `on_stop` 
-   directory, each of which can contain 0..n executables
+   directory, each of which can contain `0..n` executables
 2) `port` to listen on - default `47200`
 
 On macOS `script_dir` is `/usr/local/etc/docker-lifecycle-listener.d/`.
