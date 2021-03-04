@@ -31,6 +31,16 @@ stops.
 
 ### Concrete Examples
 
+#### [docker-etc-hosts](https://github.com/Mahoney/docker-etc-hosts)
+
+Updates /etc/hosts with the names of your running containers, so that you can address them by name.
+
+You can install it via Homebrew: brew install mahoney/tap/docker-etc-hosts
+
+Please read the caveats!
+
+#### [docker-tuntap-osx](https://github.com/Mahoney-forks/docker-tuntap-osx)
+
 On macOS with Docker Desktop, out of the box you cannot currently
 [access containers by IP address](https://github.com/docker/for-mac/issues/155).
 A tuntap based solution to this was created called 
