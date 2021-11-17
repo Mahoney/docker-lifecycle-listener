@@ -3,7 +3,7 @@
 valid_commands=("start" "stop")
 
 log() {
-  echo "$(date +%Y-%m-%dT%H:%M:%S%Z) $1"
+  echo "$(date +%Y-%m-%dT%H:%M:%S%z) $1"
 }
 
 error() {
