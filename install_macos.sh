@@ -35,14 +35,4 @@ echo "Loaded $LISTENER_SERVICE_LOCATION"
 sudo launchctl start $LISTENER_SERVICE_NAME
 echo "Started $LISTENER_SERVICE_NAME"
 
-NOTIFIER_NAME=docker-lifecycle-notifier
-
-set +e
-docker rm -f $NOTIFIER_NAME 2>/dev/null
-set -e
-docker build . -t $NOTIFIER_NAME
-docker run \
-  --detach \
-  --restart always \
-  --name $NOTIFIER_NAME \
-  $NOTIFIER_NAME
+./install_notifier.sh
