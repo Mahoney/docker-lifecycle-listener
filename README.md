@@ -19,8 +19,7 @@ the docker daemon.
 
 ## Purpose
 
-I wanted to run some scripts on the host whenever docker starts up - notably 
-setting up https://github.com/AlmirKadric-Published/docker-tuntap-osx - and 
+I wanted to run some scripts on the host whenever docker starts up and 
 could not find  any way of reliably catching that event in order to run 
 tasks that would  only work if docker were running, and re-run them if I 
 restarted docker, and  have them run as soon as possible after docker starts.
@@ -36,23 +35,6 @@ stops.
 Updates /etc/hosts with the names of your running containers, so that you can address them by name.
 
 You can install it via Homebrew: brew install mahoney/tap/docker-etc-hosts
-
-Please read the caveats!
-
-#### [docker-tuntap-osx](https://github.com/Mahoney-forks/docker-tuntap-osx)
-
-On macOS with Docker Desktop, out of the box you cannot currently
-[access containers by IP address](https://github.com/docker/for-mac/issues/155).
-A tuntap based solution to this was created called 
-[docker-tuntap-osx](https://github.com/AlmirKadric-Published/docker-tuntap-osx)
-but it requires manual steps whenever docker (or the OS) restarts and whenever
-a new network of type bridge is created. By running its scripts using 
-`docker-lifecycle-listener` it becomes an install-and-forget solution that will
-work forever. It was forked to do this at
-[Mahoney-forks/docker-tuntap-osx](https://github.com/Mahoney-forks/docker-tuntap-osx)
-
-You can install it via Homebrew:
-`brew install mahoney/tap/docker-tuntap-osx`
 
 Please read the caveats!
 
